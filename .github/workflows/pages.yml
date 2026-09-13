@@ -25,8 +25,9 @@ jobs:
       - uses: jdx/mise-action@v2
       # vendor/ は git 管理外なので、公開前に必ず取得する
       - run: mise run setup
-      # トークンが DESIGN.md とずれていないか (差分が出たら失敗)
+      # 生成物がずれていないか (ずれていたら失敗)
       - run: git diff --exit-code dist/css/tokens.css
+      - run: deno run -A scripts/shell.js --check
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

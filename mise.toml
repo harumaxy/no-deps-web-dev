@@ -2,8 +2,12 @@
 deno = "2"
 
 [tasks.setup]
-description = "依存を dist/js/vendor/ に取得し、トークンを生成する (初回・clone 後・CI で必須)"
-run = ["deno run -A scripts/vendor.js", "deno run -A scripts/tokens.js"]
+description = "依存を dist/js/vendor/ に取得し、トークンと共通 header を生成する (初回・clone 後・CI で必須)"
+run = [
+  "deno run -A scripts/vendor.js",
+  "deno run -A scripts/tokens.js",
+  "deno run -A scripts/shell.js",
+]
 
 [tasks.vendor]
 description = "deno.json の imports を esm.sh から dist/js/vendor/ に取得 (git 管理外)"
@@ -20,6 +24,14 @@ run = "deno run -A jsr:@std/http@1/file-server dist --port 8000"
 [tasks.fmt]
 run = "deno fmt"
 
+[tasks.shell]
+description = "全ページの <header> を scripts/shell.js のテンプレートから書き戻す"
+run = "deno run -A scripts/shell.js"
+
 [tasks.check]
-description = "tokens.css が DESIGN.md と一致しているか検証 (CI ゲート)"
-run = ["deno run -A scripts/tokens.js", "git diff --exit-code dist/css/tokens.css"]
+description = "生成物 (tokens.css / 各ページの header) が最新か検証 (CI ゲート)"
+run = [
+  "deno run -A scripts/tokens.js",
+  "git diff --exit-code dist/css/tokens.css",
+  "deno run -A scripts/shell.js --check",
+]

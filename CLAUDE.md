@@ -29,6 +29,7 @@ SSR は考えない。`dist/` に置いたファイルが、そのままブラ�
 - scripts/
   - vendor.js                  ← 依存を dist/*/vendor/ に取得
   - tokens.js                  ← DESIGN.md → dist/css/tokens.css
+  - shell.js                   ← 全ページ共通の <header> / <footer> を書き戻す
 - deno.json                    ← import map (LSP の型解決用) と fmt 設定のみ
 - mise.toml                    ← ツールとタスク
 - DESIGN.md                    ← デザイントークンの唯一の真実
@@ -47,7 +48,8 @@ No package.json, No node_modules, No bundler, No transpiler.
 
 `deno.json` の imports と `index.html` の import map は **別物** なので両方必要。
 前者は LSP に型を解決させるための esm.sh URL、後者はブラウザに vendor 済みファイルを
-読ませるためのパス。`mise run vendor` が後者に貼るべき JSON を出力するので、ずれたら合わせる。
+読ませるためのパス。`mise run vendor` が後者に貼るべき JSON を出力し、`dist/*.html` の inline import map が
+それと一致するかを検証する。ずれていたら正しい JSON を添えて失敗するので、貼り直す。
 
 ## セットアップ
 
@@ -71,13 +73,27 @@ mise run dev       # http://localhost:8000
   - カスタムは CSS 変数で行う。生 CSS を書く場合も CSS nesting などで最小限に
 - 動的コンポーネントは Preact + htm。JSX は使わない (トランスパイルが必要になるため)
 
+### 共通 header / footer について
+
+nav とフッターは全ページ共通なので `scripts/shell.js` のテンプレートが唯一の真実で、
+`mise run shell` が各ページの `<header>` と `<footer>` を書き戻す。HTML を直接編集しない。
+`aria-current` と CTA の出し分けはファイル名から導出されるので手で付けない。
+リンクやコピーを変えるときは `LINKS` / `CTA` / `COLUMNS` / `TAGLINE` を編集する。
+
+head は共通化しない。title / description / OG / 構造化データが各ページ固有で、
+共通部分 (import map・CSS リンク) は `scripts/vendor.js` の検証が守っている。
+
+これらを JS (Preact / Web Component) で描くのは禁止。FOUC と CLS が出るうえ、
+JS なしで完全に動く HTML という、この構成の一番の利点を失うため。
+
 ### 依存を追加するとき
 
 1. `deno.json` の `imports` に esm.sh の URL をバージョン固定で追加
 2. `scripts/vendor.js` の `ENTRY` に、その npm パッケージ内の ESM 実ファイルのパスを追加
    - esm.sh の変換済み出力は同一パッケージ内のサブモジュールを内部 URL で参照してしまい、
      ライブラリが二重ロードされる。そのため `?raw` で npm の実ファイルを取る
-3. `mise run vendor` を実行し、出力された import map を `dist/index.html` に反映
+3. `mise run vendor` を実行し、出力された import map を `dist/*.html` の全ページに反映
+   (ずれたままだと vendor が失敗する)
 4. CSS ライブラリは import map の対象外。`scripts/vendor.js` の `STYLESHEETS` に追加
 
 CDN を HTML から直接読むのは禁止 (フォントを除く)。CDN が落ちるとサイトが動かなくなるため、
@@ -109,7 +125,10 @@ deno fmt --check   # scripts/ の整形
 
 - `scripts/vendor.js` は、取得したファイルに外部 URL への import が残っていたら失敗する
   (= CDN 依存が残っていないことの検証)
+- `scripts/vendor.js` は、`dist/*.html` の import map が vendoring 結果とずれていたら失敗する
 - `scripts/tokens.js` は DESIGN.md の frontmatter が壊れていたら失敗する
+- `scripts/shell.js --check` は、どれかのページの `<header>` / `<footer>` が
+  テンプレートとずれていたら失敗する
 - `dist/pricing.html` の料金カードは Preact が描画する。import map と vendoring が
   生きていることの確認用。カードが出なければどこかが壊れている
 

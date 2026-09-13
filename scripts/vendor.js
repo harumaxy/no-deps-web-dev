@@ -71,8 +71,22 @@ for (const [name, url] of Object.entries(STYLESHEETS)) {
 const map = Object.fromEntries(
   Object.keys(imports).map((s) => [s, `/js/vendor/${fileOf(s)}`]),
 );
-console.log(
-  `\nimport map (dist/index.html と一致しているか確認):\n${
-    JSON.stringify({ imports: map }, null, 2)
-  }`,
-);
+const expected = JSON.stringify({ imports: map }, null, 2);
+
+// ブラウザは外部 import map を読めないので、各ページへの inline 複製は避けられない。
+// 手で合わせる代わりにここで検証する — ずれたら落とす。
+const DIST = new URL("../dist/", import.meta.url);
+let checked = 0;
+for await (const entry of Deno.readDir(DIST)) {
+  if (!entry.isFile || !entry.name.endsWith(".html")) continue;
+  const html = await Deno.readTextFile(new URL(entry.name, DIST));
+  const block = html.match(/<script type="importmap">\n([\s\S]*?)\n<\/script>/);
+  if (!block) continue;
+  checked++;
+  if (block[1] !== expected) {
+    throw new Error(
+      `dist/${entry.name}: import map がずれている。この内容に置き換える:\n${expected}`,
+    );
+  }
+}
+console.log(`\nimport map OK (${checked} ファイル)`);
