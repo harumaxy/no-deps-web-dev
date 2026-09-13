@@ -23,6 +23,7 @@ colors:
   hairline-cool: "#ededed"
   hairline-cool-2: "#efefef"
   hairline-cool-3: "#d4d4d4"
+  hairline-night: "#2e2e2e"
   accent-purple: "#6b01c2"
   accent-violet: "#644fc1"
   accent-purple-soft: "#eddbf9"
@@ -258,6 +259,7 @@ The product itself appears as composited UI screenshots on every page: dashboard
 - **Canvas Soft** (`{colors.canvas-soft}` — `#fafafa`): Barely-tinted off-white for alternating section bands.
 - **Canvas Night** (`{colors.canvas-night}` — `#1c1c1c`): Deep near-black used in code blocks, dashboard mockups, featured pricing tier.
 - **Canvas Night Soft** (`{colors.canvas-night-soft}` — `#202020`): Slightly lifted dark for nested chrome.
+- **Hairline Night** (`{colors.hairline-night}` — `#2e2e2e`): Hairline border on canvas-night surfaces — the dark-mode counterpart to `{colors.hairline}`.
 - **Hairline** (`{colors.hairline}` — `#dfdfdf`): 1px borders on cards and tables.
 - **Hairline Strong** (`{colors.hairline-strong}` — `#c7c7c7`): Slightly darker border for emphasis.
 - **Hairline Cool** (`{colors.hairline-cool}` — `#ededed`) / **Hairline Cool 2** (`#efefef`) / **Hairline Cool 3** (`#d4d4d4`): The brand's grey ladder for fine chrome work.

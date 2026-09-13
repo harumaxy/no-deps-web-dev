@@ -1,14 +1,22 @@
 /* DESIGN.md のトークン (tokens.css) を PicoCSS の変数に割り当てる唯一の場所。
    個別のセレクタに色やサイズを直接書かない — 必ずここか var() 経由で。 */
-/* PicoCSS は :root:not([data-theme=dark]),[data-theme=light] で色を定義するため
-   より高い詳細度のセレクタで上書きする (:root だけだと負ける) */
-:root[data-theme="light"] {
+
+/* 色以外 (タイポ・余白・角丸) はテーマ共通。
+   --pico-font-size は html の font-size になるので割り当てない
+   (px で固定するとブラウザのフォントサイズ設定を無視してしまう。
+   PicoCSS のデフォルト 100% = 16px で DESIGN.md の body-md と一致する) */
+:root {
   --pico-font-family: var(--type-body-md-family);
-  --pico-font-size: var(--type-body-md-size);
   --pico-line-height: var(--type-body-md-line-height);
   --pico-border-radius: var(--radius-sm);
   --pico-spacing: var(--space-xl);
+  --pico-font-family-monospace: var(--type-code-family);
+}
 
+/* 色は PicoCSS と同じセレクタ形で上書きする。詳細度を合わせて後勝ちさせる
+   (:root だけだと :root:not([data-theme=dark]) に負ける) */
+:root:not([data-theme="dark"]),
+[data-theme="light"] {
   --pico-background-color: var(--color-canvas);
   --pico-color: var(--color-ink);
   --pico-muted-color: var(--color-ink-mute);
@@ -30,10 +38,48 @@
   --pico-primary-hover-border: var(--color-primary-deep);
   --pico-primary-inverse: var(--color-on-primary);
   --pico-primary-focus: var(--color-primary-soft);
+  /* 未割り当てだと PicoCSS の青 (#0172ad 系) が下線・ホバー・選択範囲に残る */
+  --pico-primary-hover: var(--color-primary-deep);
+  --pico-primary-underline: var(--color-primary);
+  --pico-text-selection-color: var(--color-primary-soft);
 
   --pico-code-background-color: var(--color-canvas-night);
   --pico-code-color: var(--color-on-dark);
-  --pico-font-family-monospace: var(--type-code-family);
+}
+
+/* OS がダークのとき。白キャンバスを canvas-night に反転させる。
+   data-theme="light" が明示されていれば適用しない (PicoCSS と同じ挙動)。
+   トグルを足すなら [data-theme="dark"] にも同じ割り当てを複製する。 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --pico-background-color: var(--color-canvas-night);
+    --pico-color: var(--color-on-dark);
+    --pico-muted-color: var(--color-ink-mute-2);
+    --pico-muted-border-color: var(--color-hairline-night);
+    --pico-border-color: var(--color-hairline-night);
+    --pico-h1-color: var(--color-on-dark);
+    --pico-h2-color: var(--color-on-dark);
+    --pico-h3-color: var(--color-on-dark);
+    --pico-h4-color: var(--color-on-dark);
+    --pico-h5-color: var(--color-on-dark);
+    --pico-h6-color: var(--color-on-dark);
+
+    /* 暗い地では primary-deep はコントラスト不足。明るい primary をリンク色に使う */
+    --pico-primary: var(--color-primary);
+    --pico-primary-background: var(--color-primary);
+    --pico-primary-hover-background: var(--color-primary-soft);
+    --pico-primary-border: var(--color-primary);
+    --pico-primary-hover-border: var(--color-primary-soft);
+    --pico-primary-inverse: var(--color-on-primary);
+    --pico-primary-focus: var(--color-primary-deep);
+    --pico-primary-hover: var(--color-primary-soft);
+    --pico-primary-underline: var(--color-primary-deep);
+    --pico-text-selection-color: var(--color-primary-deep);
+
+    /* 地が canvas-night なので、コードブロックは一段持ち上げた night-soft */
+    --pico-code-background-color: var(--color-canvas-night-soft);
+    --pico-code-color: var(--color-on-dark);
+  }
 }
 
 /* 見出しは display ティア (weight 500 + 負のトラッキング) を使う */
