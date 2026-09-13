@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>no-deps-web-dev</title>
+<meta name="description" content="ビルドもバンドルもしない静的サイト">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+
+<link rel="stylesheet" href="/css/vendor/pico.classless.min.css">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/theme.css">
+
+<!-- scripts/vendor.js の出力と一致させる。ずれたら読み込みが 404 する。 -->
+<script type="importmap">
+{
+  "imports": {
+    "preact": "/js/vendor/preact.js",
+    "preact/hooks": "/js/vendor/preact-hooks.js",
+    "htm": "/js/vendor/htm.js",
+    "htm/preact": "/js/vendor/htm-preact.js"
+  }
+}
+</script>
+<script type="module" src="/js/app.js"></script>
+</head>
+<body>
+<header>
+  <hgroup>
+    <h1>no-deps-web-dev</h1>
+    <p>ビルドなし、バンドルなし、node_modules なし。</p>
+  </hgroup>
+  <p><a href="#" role="button">Start your project</a></p>
+</header>
+
+<main>
+  <h2>動的コンポーネント</h2>
+  <p>以下は Preact + htm が import map 経由で動いていることの確認。</p>
+  <div id="app"></div>
+</main>
+
+<footer>
+  <small>Design tokens are generated from DESIGN.md.</small>
+</footer>
+</body>
+</html>

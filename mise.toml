@@ -1,0 +1,25 @@
+[tools]
+deno = "2"
+
+[tasks.setup]
+description = "依存を dist/js/vendor/ に取得し、トークンを生成する (初回・clone 後・CI で必須)"
+run = ["deno run -A scripts/vendor.js", "deno run -A scripts/tokens.js"]
+
+[tasks.vendor]
+description = "deno.json の imports を esm.sh から dist/js/vendor/ に取得 (git 管理外)"
+run = "deno run -A scripts/vendor.js"
+
+[tasks.tokens]
+description = "DESIGN.md の frontmatter から dist/css/tokens.css を生成"
+run = "deno run -A scripts/tokens.js"
+
+[tasks.dev]
+description = "dist/ を静的配信 (http://localhost:8000)"
+run = "deno run -A jsr:@std/http@1/file-server dist --port 8000"
+
+[tasks.fmt]
+run = "deno fmt"
+
+[tasks.check]
+description = "tokens.css が DESIGN.md と一致しているか検証 (CI ゲート)"
+run = ["deno run -A scripts/tokens.js", "git diff --exit-code dist/css/tokens.css"]

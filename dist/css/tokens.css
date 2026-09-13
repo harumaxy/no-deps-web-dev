@@ -1,0 +1,111 @@
+/* 生成ファイル — 直接編集しない。DESIGN.md を編集して `mise run tokens` */
+:root {
+  /* colors */
+  --color-primary: #3ecf8e;
+  --color-primary-deep: #24b47e;
+  --color-primary-soft: #4ade80;
+  --color-ink: #171717;
+  --color-ink-secondary: #212121;
+  --color-ink-mute: #707070;
+  --color-ink-mute-2: #9a9a9a;
+  --color-ink-faint: #b2b2b2;
+  --color-on-primary: #171717;
+  --color-on-dark: #ffffff;
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #fafafa;
+  --color-canvas-night: #1c1c1c;
+  --color-canvas-night-soft: #202020;
+  --color-hairline: #dfdfdf;
+  --color-hairline-strong: #c7c7c7;
+  --color-hairline-cool: #ededed;
+  --color-hairline-cool-2: #efefef;
+  --color-hairline-cool-3: #d4d4d4;
+  --color-accent-purple: #6b01c2;
+  --color-accent-violet: #644fc1;
+  --color-accent-purple-soft: #eddbf9;
+  --color-accent-yellow: #ffdb13;
+  --color-accent-tomato: #ff2201;
+  --color-accent-pink: #c7007e;
+  --color-accent-indigo: #054cff;
+  --color-accent-crimson: #e2005a;
+
+  /* spacing */
+  --space-xxs: 2px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-xxl: 32px;
+  --space-huge: 64px;
+
+  /* rounded */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* typography */
+  --type-display-xxl-family: Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --type-display-xxl-size: 64px;
+  --type-display-xxl-weight: 500;
+  --type-display-xxl-line-height: 1.1;
+  --type-display-xxl-letter-spacing: -1.92px;
+  --type-display-xl-family: Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --type-display-xl-size: 48px;
+  --type-display-xl-weight: 500;
+  --type-display-xl-line-height: 1.1;
+  --type-display-xl-letter-spacing: -1.44px;
+  --type-display-lg-family: Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --type-display-lg-size: 36px;
+  --type-display-lg-weight: 500;
+  --type-display-lg-line-height: 1.15;
+  --type-display-lg-letter-spacing: -0.72px;
+  --type-display-md-family: Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --type-display-md-size: 28px;
+  --type-display-md-weight: 500;
+  --type-display-md-line-height: 1.2;
+  --type-display-md-letter-spacing: -0.42px;
+  --type-heading-lg-family: Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --type-heading-lg-size: 22px;
+  --type-heading-lg-weight: 500;
+  --type-heading-lg-line-height: 1.2;
+  --type-heading-lg-letter-spacing: 0;
+  --type-heading-md-family: Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --type-heading-md-size: 18px;
+  --type-heading-md-weight: 500;
+  --type-heading-md-line-height: 1.4;
+  --type-heading-md-letter-spacing: 0;
+  --type-body-lg-family: Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --type-body-lg-size: 18px;
+  --type-body-lg-weight: 400;
+  --type-body-lg-line-height: 1.55;
+  --type-body-lg-letter-spacing: 0;
+  --type-body-md-family: Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --type-body-md-size: 16px;
+  --type-body-md-weight: 400;
+  --type-body-md-line-height: 1.5;
+  --type-body-md-letter-spacing: 0;
+  --type-button-md-family: Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --type-button-md-size: 14px;
+  --type-button-md-weight: 500;
+  --type-button-md-line-height: 1;
+  --type-button-md-letter-spacing: 0;
+  --type-caption-family: Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --type-caption-size: 13px;
+  --type-caption-weight: 400;
+  --type-caption-line-height: 1.45;
+  --type-caption-letter-spacing: 0;
+  --type-micro-family: Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --type-micro-size: 12px;
+  --type-micro-weight: 400;
+  --type-micro-line-height: 1.45;
+  --type-micro-letter-spacing: 0;
+  --type-code-family: ui-monospace, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  --type-code-size: 14px;
+  --type-code-weight: 400;
+  --type-code-line-height: 1.5;
+  --type-code-letter-spacing: 0;
+}

@@ -1,0 +1,10 @@
+{
+  "imports": {
+    "preact": "https://esm.sh/preact@10.27.2",
+    "preact/hooks": "https://esm.sh/preact@10.27.2/hooks",
+    "htm": "https://esm.sh/htm@3.1.1",
+    "htm/preact": "https://esm.sh/htm@3.1.1/preact"
+  },
+  "fmt": { "include": ["scripts/"] },
+  "lock": false
+}
