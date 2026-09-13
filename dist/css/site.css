@@ -1,0 +1,91 @@
+/* レイアウトだけを書く層。色・タイポの実値は書かない (tokens.css と theme.css の担当)。
+   PicoCSS classless で足りないものだけを最小限のクラスで足す。 */
+
+/* カード列 (機能 / 料金 / ログ) はすべてこの 1 本の auto-fit grid で組む */
+.grid {
+  display: grid;
+  gap: var(--space-xl);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+}
+
+/* ヒーロー。グラデーションは敷かない (DESIGN.md 非交渉) */
+.hero {
+  text-align: center;
+  padding-block: var(--space-huge) var(--space-xxl);
+
+  & > p {
+    max-width: 44rem;
+    margin-inline: auto;
+    font-size: var(--type-body-lg-size);
+    line-height: var(--type-body-lg-line-height);
+  }
+}
+
+/* CTA 群。緑の塗りつぶしは 1 ビューポートに 1 つだけ */
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  justify-content: center;
+  margin-block: var(--space-xl);
+}
+
+/* 製品 UI モックアップ。画像は使わず HTML で組み、Level 2 の影で浮かせる */
+.mock {
+  margin: 0;
+  border: var(--pico-border-width) solid var(--pico-border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 8%);
+  overflow: hidden;
+
+  & > figcaption {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: var(--pico-border-width) solid var(--pico-border-color);
+    font-size: var(--type-micro-size);
+  }
+
+  & table {
+    margin: 0;
+    font-size: var(--type-caption-size);
+  }
+}
+
+/* ドキュメントの 2 カラム。サイドバーは狭い画面で本文の上に回る */
+.docs {
+  display: grid;
+  gap: var(--space-xxl);
+  align-items: start;
+
+  @media (min-width: 992px) {
+    grid-template-columns: 15rem 1fr;
+
+    & > aside {
+      position: sticky;
+      top: var(--space-xl);
+    }
+  }
+}
+
+/* 料金カードは高さを揃え、CTA を下端に固定する */
+.plan {
+  display: flex;
+  flex-direction: column;
+
+  & > ul {
+    flex: 1;
+  }
+
+  & [role="button"] {
+    display: block;
+    text-align: center;
+  }
+}
+
+/* 中央寄せの締め CTA と、フッターのリンク列 */
+.center { text-align: center; }
+
+footer .grid { gap: var(--space-lg); }
+footer ul { list-style: none; padding: 0; }

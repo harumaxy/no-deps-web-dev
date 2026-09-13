@@ -15,15 +15,17 @@ SSR は考えない。`dist/` に置いたファイルが、そのままブラ�
 
 ```
 - dist/                        ← Web で動作する形のアセット。デプロイ対象
-  - index.html                 ← import map をここに書く
+  - index.html                 ← import map をここに書く (各ページに同じものを複製する)
+  - pricing.html / docs.html / changelog.html / 404.html
   - css/
     - tokens.css               ← 生成物 (DESIGN.md 由来)。コミットする
     - theme.css                ← トークンを PicoCSS 変数に割り当てる層
+    - site.css                 ← レイアウトだけの層。色・タイポの実値は書かない
     - vendor/                  ← 取得物。git 管理外
   - js/
     - app.js
     - vendor/                  ← 取得物。git 管理外
-  - (robots.txt, sitemap.xml, llms.txt, 追加ページ など)
+  - robots.txt, sitemap.xml, llms.txt
 - scripts/
   - vendor.js                  ← 依存を dist/*/vendor/ に取得
   - tokens.js                  ← DESIGN.md → dist/css/tokens.css
@@ -90,6 +92,7 @@ JS / CSS は必ず vendoring する。Web フォントだけは例外 — 失敗
   `mise run tokens` が `dist/css/tokens.css` (CSS カスタムプロパティ) を生成する
 - `dist/css/theme.css` がトークンを PicoCSS の `--pico-*` 変数に割り当てる唯一の場所。
   色やサイズの実値を書いてよいのはここだけ (それも `var(--color-*)` 経由)
+- レイアウト (grid・sticky・コンテナ) は `dist/css/site.css`。ここには色を書かない
 - PicoCSS は `:root:not([data-theme=dark]),[data-theme=light]` で色を定義するため、
   上書きは `:root[data-theme="light"]` 以上の詳細度で行う
 - 緑 (`--color-primary`) は唯一の色彩イベント。塗りつぶし CTA とワードマークだけに使う
@@ -107,8 +110,8 @@ deno fmt --check   # scripts/ の整形
 - `scripts/vendor.js` は、取得したファイルに外部 URL への import が残っていたら失敗する
   (= CDN 依存が残っていないことの検証)
 - `scripts/tokens.js` は DESIGN.md の frontmatter が壊れていたら失敗する
-- `dist/index.html` のカウンターは、import map と vendoring が生きていることの確認用。
-  描画されなければどこかが壊れている
+- `dist/pricing.html` の料金カードは Preact が描画する。import map と vendoring が
+  生きていることの確認用。カードが出なければどこかが壊れている
 
 ## デプロイ
 

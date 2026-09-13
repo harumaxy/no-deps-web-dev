@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>no-deps-web-dev</title>
-<meta name="description" content="ビルドもバンドルもしない静的サイト">
+<title>Supabaze — Postgres をそのままプロダクトの土台に</title>
+<meta name="description" content="Supabaze は Postgres の上に認証・ストレージ・リアルタイム・エッジ関数を載せたオープンソースの開発プラットフォーム。数分で API が立ち上がる。">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="/css/vendor/pico.classless.min.css">
 <link rel="stylesheet" href="/css/tokens.css">
 <link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/site.css">
 
 <!-- scripts/vendor.js の出力と一致させる。ずれたら読み込みが 404 する。 -->
 <script type="importmap">
@@ -29,21 +30,149 @@
 </head>
 <body>
 <header>
-  <hgroup>
-    <h1>no-deps-web-dev</h1>
-    <p>ビルドなし、バンドルなし、node_modules なし。</p>
-  </hgroup>
-  <p><a href="#" role="button">Start your project</a></p>
+  <nav>
+    <ul>
+      <li><a class="wordmark" href="/"><strong>Supa<b>baze</b></strong></a></li>
+    </ul>
+    <ul>
+      <li><a href="/docs.html">Docs</a></li>
+      <li><a href="/pricing.html">Pricing</a></li>
+      <li><a href="/changelog.html">Changelog</a></li>
+      <li><a href="/pricing.html" role="button">Start your project</a></li>
+    </ul>
+  </nav>
 </header>
 
 <main>
-  <h2>動的コンポーネント</h2>
-  <p>以下は Preact + htm が import map 経由で動いていることの確認。</p>
-  <div id="app"></div>
+  <section class="hero">
+    <h1>Postgres を、そのまま<br>プロダクトの土台に。</h1>
+    <p>
+      Supabaze はマネージドな Postgres に、認証・ストレージ・リアルタイム・エッジ関数を載せた
+      オープンソースの開発プラットフォーム。プロジェクトを作った瞬間に REST と Realtime の API が生える。
+    </p>
+    <div class="cta">
+      <a href="/pricing.html" role="button">Start your project</a>
+      <a href="/docs.html" role="button" class="outline">ドキュメントを読む</a>
+    </div>
+
+    <figure class="mock">
+      <figcaption>
+        <span>supabaze / production</span>
+        <span>·</span>
+        <span>table editor</span>
+      </figcaption>
+      <table>
+        <thead>
+          <tr><th>id</th><th>email</th><th>plan</th><th>created_at</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>b1f2…</td><td>hana@example.com</td><td>pro</td><td>2026-09-11 09:12</td></tr>
+          <tr><td>7c3a…</td><td>kenji@example.com</td><td>free</td><td>2026-09-11 08:47</td></tr>
+          <tr><td>e90d…</td><td>mai@example.com</td><td>team</td><td>2026-09-10 22:03</td></tr>
+          <tr><td>2ab8…</td><td>ryo@example.com</td><td>free</td><td>2026-09-10 19:55</td></tr>
+        </tbody>
+      </table>
+    </figure>
+  </section>
+
+  <section>
+    <h2>必要なバックエンドは、だいたい入っている</h2>
+    <div class="grid">
+      <article>
+        <h4>Database</h4>
+        <p>専有の Postgres インスタンス。拡張機能もそのまま使え、いつでも標準の <code>pg_dump</code> で持ち出せる。</p>
+      </article>
+      <article>
+        <h4>Auth</h4>
+        <p>メール・OAuth・SAML・パスキーに対応。行レベルセキュリティ (RLS) と同じ <code>auth.uid()</code> で権限を書く。</p>
+      </article>
+      <article>
+        <h4>Storage</h4>
+        <p>S3 互換のオブジェクトストレージ。画像変換と CDN 配信込みで、権限はテーブルと同じポリシーで書ける。</p>
+      </article>
+      <article>
+        <h4>Realtime</h4>
+        <p>WAL を購読して、行の変更を WebSocket でそのまま配信。Presence とブロードキャストも同じ接続に乗る。</p>
+      </article>
+      <article>
+        <h4>Edge Functions</h4>
+        <p>Deno ランタイムの TypeScript 関数を 34 リージョンにデプロイ。コールドスタートは 50ms 未満。</p>
+      </article>
+      <article>
+        <h4>Vector</h4>
+        <p><code>pgvector</code> による埋め込み検索。RAG のインデックスを別サービスに切り出さずに済む。</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>3 行で読み書きできる</h2>
+    <p>クライアントライブラリは Postgres の権限モデルの上に薄く乗っているだけ。ORM は持ち込まなくていい。</p>
+    <article class="invert">
+      <pre><code>import { createClient } from "@supabaze/supabaze-js"
+
+const supabaze = createClient(PROJECT_URL, ANON_KEY)
+
+const { data, error } = await supabaze
+  .from("posts")
+  .select("id, title, author:profiles(name)")
+  .eq("published", true)
+  .order("created_at", { ascending: false })
+  .limit(20)</code></pre>
+    </article>
+  </section>
+
+  <section>
+    <h2>運用の数字</h2>
+    <div class="grid">
+      <article><h3>99.99%</h3><p>Team プラン以上の月間稼働率 SLA。</p></article>
+      <article><h3>34</h3><p>エッジ関数とキャッシュが動くリージョン数。</p></article>
+      <article><h3>&lt; 50ms</h3><p>同一リージョン内の p95 クエリレイテンシ。</p></article>
+      <article><h3>7 年</h3><p>Point-in-Time Recovery の最長保持期間 (Enterprise)。</p></article>
+    </div>
+  </section>
+
+  <section class="center">
+    <h2>今日から始める</h2>
+    <p>クレジットカードなしで 2 プロジェクトまで無料。制限に当たってからアップグレードすればいい。</p>
+    <div class="cta">
+      <a href="/pricing.html" role="button">Start your project</a>
+      <a href="/docs.html" role="button" class="outline">クイックスタート</a>
+    </div>
+  </section>
 </main>
 
 <footer>
-  <small>Design tokens are generated from DESIGN.md.</small>
+  <div class="grid">
+    <div>
+      <strong class="wordmark">Supa<b>baze</b></strong>
+      <p><small>Postgres をそのままプロダクトの土台に。</small></p>
+    </div>
+    <div>
+      <small>Product</small>
+      <ul>
+        <li><a href="/#database">Database</a></li>
+        <li><a href="/pricing.html">Pricing</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul>
+    </div>
+    <div>
+      <small>Developers</small>
+      <ul>
+        <li><a href="/docs.html">Docs</a></li>
+        <li><a href="/docs.html#api">API リファレンス</a></li>
+        <li><a href="/llms.txt">llms.txt</a></li>
+      </ul>
+    </div>
+    <div>
+      <small>Company</small>
+      <ul>
+        <li><a href="/pricing.html#faq">FAQ</a></li>
+        <li><a href="/changelog.html">ステータス</a></li>
+      </ul>
+    </div>
+  </div>
+  <small>これは実在しない架空のサービスです。デザイントークンは DESIGN.md から生成しています。</small>
 </footer>
 </body>
 </html>

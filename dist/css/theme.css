@@ -109,3 +109,70 @@ h3 {
   h2 { font-size: var(--type-display-md-size); }
   h3 { font-size: var(--type-heading-lg-size); }
 }
+
+/* --- DESIGN.md のコンポーネントを PicoCSS 変数に割り当てる ---------------- */
+
+/* button-secondary-outline — 白地 / ink 文字 / hairline-strong の 1px 枠 */
+[role="button"].outline {
+  --pico-background-color: transparent;
+  --pico-border-color: var(--color-hairline-strong);
+  --pico-color: var(--pico-color);
+}
+
+[role="button"].outline:is(:hover, :active, :focus) {
+  --pico-background-color: var(--color-canvas-soft);
+  --pico-border-color: var(--color-ink-mute);
+}
+
+/* card-pricing-featured / card-feature-dark — 反転した近黒面 */
+article.invert {
+  --pico-card-background-color: var(--color-canvas-night);
+  --pico-card-border-color: var(--color-canvas-night);
+  --pico-card-sectioning-background-color: var(--color-canvas-night-soft);
+  --pico-color: var(--color-on-dark);
+  --pico-muted-color: var(--color-ink-mute-2);
+  --pico-border-color: var(--color-hairline-night);
+  color: var(--color-on-dark);
+}
+
+/* link-on-light — リンクは本文色 + 控えめな下線。
+   PicoCSS は既定でリンクを primary (= 緑) にするが、緑は塗りつぶし CTA と
+   ワードマークだけの色。:where() 由来の詳細度 0 を素のセレクタで上書きする。 */
+a:not([role="button"]) {
+  color: inherit;
+  text-decoration-color: var(--color-hairline-strong);
+}
+
+a:not([role="button"]):is(:hover, :active, :focus) {
+  text-decoration-color: currentColor;
+}
+
+/* ワードマークの緑 — 塗りつぶし CTA と並ぶ、唯一の色彩イベント */
+.wordmark {
+  color: inherit;
+  text-decoration: none;
+}
+
+.wordmark b {
+  color: var(--color-primary);
+  font-weight: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    [role="button"].outline {
+      --pico-border-color: var(--color-hairline-night);
+    }
+
+    [role="button"].outline:is(:hover, :active, :focus) {
+      --pico-background-color: var(--color-canvas-night-soft);
+      --pico-border-color: var(--color-ink-mute);
+    }
+
+    /* 地が既に近黒。反転カードは一段持ち上げ、緑の枠で featured を示す */
+    article.invert {
+      --pico-card-background-color: var(--color-canvas-night-soft);
+      --pico-card-border-color: var(--color-primary);
+    }
+  }
+}

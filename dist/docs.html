@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ドキュメント — Supabaze</title>
+<meta name="description" content="Supabaze のクイックスタート、認証、ストレージ、リアルタイム、エッジ関数、API リファレンス。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+
+<link rel="stylesheet" href="/css/vendor/pico.classless.min.css">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<header>
+  <nav>
+    <ul>
+      <li><a class="wordmark" href="/"><strong>Supa<b>baze</b></strong></a></li>
+    </ul>
+    <ul>
+      <li><a href="/docs.html" aria-current="page">Docs</a></li>
+      <li><a href="/pricing.html">Pricing</a></li>
+      <li><a href="/changelog.html">Changelog</a></li>
+      <li><a href="/pricing.html" role="button">Start your project</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="docs">
+  <aside>
+    <nav>
+      <ul>
+        <li><a href="#quickstart">クイックスタート</a></li>
+        <li><a href="#database">データベース</a></li>
+        <li><a href="#auth">認証</a></li>
+        <li><a href="#storage">ストレージ</a></li>
+        <li><a href="#realtime">リアルタイム</a></li>
+        <li><a href="#functions">エッジ関数</a></li>
+        <li><a href="#api">API リファレンス</a></li>
+        <li><a href="#selfhost">セルフホスト</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <article>
+    <hgroup>
+      <h1>ドキュメント</h1>
+      <p>プロジェクト作成から本番投入までを、上から順に読めば一通り。</p>
+    </hgroup>
+
+    <section id="quickstart">
+      <h2>クイックスタート</h2>
+      <p>CLI をインストールし、ローカルスタックを起動する。Docker があれば他に必要なものはない。</p>
+      <pre><code>npm i -g @supabaze/cli
+supabaze init
+supabaze start    # ローカルに Postgres + API + Studio が立つ
+supabaze link --project-ref your-project-ref</code></pre>
+      <p>環境変数はプロジェクト設定からコピーする。<code>ANON_KEY</code> はクライアントに置いてよい。<code>SERVICE_ROLE_KEY</code> は RLS を迂回するので、サーバー側だけで使う。</p>
+      <pre><code>SUPABAZE_URL=https://your-project-ref.supabaze.co
+SUPABAZE_ANON_KEY=eyJhbGciOi...</code></pre>
+    </section>
+
+    <section id="database">
+      <h2>データベース</h2>
+      <p>中身はただの Postgres 16。マイグレーションは SQL ファイルとしてリポジトリに置く。</p>
+      <pre><code>supabaze migration new create_posts
+# supabaze/migrations/20260913090000_create_posts.sql を編集
+supabaze db push</code></pre>
+      <p>行レベルセキュリティは既定で有効。ポリシーを書くまで、そのテーブルは誰からも読めない。</p>
+      <pre><code>alter table posts enable row level security;
+
+create policy "公開済みは誰でも読める"
+  on posts for select
+  using (published = true);
+
+create policy "自分の投稿だけ書き換えられる"
+  on posts for update
+  using (auth.uid() = author_id);</code></pre>
+    </section>
+
+    <section id="auth">
+      <h2>認証</h2>
+      <p>サインアップ・OAuth・パスキーはすべて同じクライアントから呼ぶ。発行された JWT はそのまま Postgres に渡り、<code>auth.uid()</code> として参照できる。</p>
+      <pre><code>await supabaze.auth.signInWithOtp({ email: "hana@example.com" })
+await supabaze.auth.signInWithOAuth({ provider: "github" })
+
+const { data: { user } } = await supabaze.auth.getUser()</code></pre>
+    </section>
+
+    <section id="storage">
+      <h2>ストレージ</h2>
+      <p>バケットはテーブルと同じポリシーで守る。画像はクエリパラメータで変換できる。</p>
+      <pre><code>await supabaze.storage.from("avatars").upload(`${user.id}/avatar.png`, file)
+
+const { data } = supabaze.storage
+  .from("avatars")
+  .getPublicUrl(`${user.id}/avatar.png`, { transform: { width: 128, height: 128 } })</code></pre>
+    </section>
+
+    <section id="realtime">
+      <h2>リアルタイム</h2>
+      <p>WAL の変更をそのまま購読する。購読にも RLS が効くので、見える行しか届かない。</p>
+      <pre><code>supabaze
+  .channel("posts")
+  .on("postgres_changes", { event: "INSERT", schema: "public", table: "posts" },
+      (payload) => console.log(payload.new))
+  .subscribe()</code></pre>
+    </section>
+
+    <section id="functions">
+      <h2>エッジ関数</h2>
+      <p>Deno ランタイムの TypeScript。<code>Deno.serve</code> だけの素の Web 標準で書ける。</p>
+      <pre><code>Deno.serve(async (req) => {
+  const { name } = await req.json()
+  return Response.json({ message: `Hello ${name}` })
+})</code></pre>
+      <pre><code>supabaze functions deploy hello --region all</code></pre>
+    </section>
+
+    <section id="api">
+      <h2>API リファレンス</h2>
+      <p>テーブルを作った時点で REST エンドポイントが生える。以下は主要なもの。</p>
+      <table>
+        <thead>
+          <tr><th>メソッド</th><th>パス</th><th>説明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>GET</td><td><code>/rest/v1/:table</code></td><td>行の取得。<code>select</code>, <code>order</code>, <code>limit</code> をクエリで指定</td></tr>
+          <tr><td>POST</td><td><code>/rest/v1/:table</code></td><td>行の挿入。<code>Prefer: resolution=merge-duplicates</code> で upsert</td></tr>
+          <tr><td>PATCH</td><td><code>/rest/v1/:table</code></td><td>フィルタに一致する行の更新</td></tr>
+          <tr><td>DELETE</td><td><code>/rest/v1/:table</code></td><td>フィルタに一致する行の削除</td></tr>
+          <tr><td>POST</td><td><code>/rest/v1/rpc/:fn</code></td><td>Postgres 関数の呼び出し</td></tr>
+          <tr><td>POST</td><td><code>/auth/v1/token</code></td><td>アクセストークンの発行・更新</td></tr>
+          <tr><td>POST</td><td><code>/storage/v1/object/:bucket/:path</code></td><td>オブジェクトのアップロード</td></tr>
+        </tbody>
+      </table>
+      <p>認証は <code>Authorization: Bearer &lt;JWT&gt;</code> と <code>apikey</code> ヘッダの両方を付ける。</p>
+      <pre><code>curl "$SUPABAZE_URL/rest/v1/posts?select=id,title&published=eq.true" \
+  -H "apikey: $SUPABAZE_ANON_KEY" \
+  -H "Authorization: Bearer $SUPABAZE_ANON_KEY"</code></pre>
+    </section>
+
+    <section id="selfhost">
+      <h2>セルフホスト</h2>
+      <p>全コンポーネントが Apache-2.0。マネージド版と API 互換なので、後から移っても書き換えは要らない。</p>
+      <pre><code>git clone https://github.com/supabaze/supabaze
+cd supabaze/docker
+cp .env.example .env
+docker compose up -d</code></pre>
+    </section>
+  </article>
+</main>
+
+<footer>
+  <small>これは実在しない架空のサービスです。デザイントークンは DESIGN.md から生成しています。</small>
+</footer>
+</body>
+</html>
