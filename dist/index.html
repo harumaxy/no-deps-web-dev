@@ -6,6 +6,18 @@
 <title>Supabaze — Postgres をそのままプロダクトの土台に</title>
 <meta name="description" content="Supabaze は Postgres の上に認証・ストレージ・リアルタイム・エッジ関数を載せたオープンソースの開発プラットフォーム。数分で API が立ち上がる。">
 
+<link rel="canonical" href="https://supabaze.example/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Supabaze">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:url" content="https://supabaze.example/">
+<meta property="og:title" content="Supabaze — Postgres をそのままプロダクトの土台に">
+<meta property="og:description" content="Supabaze は Postgres の上に認証・ストレージ・リアルタイム・エッジ関数を載せたオープンソースの開発プラットフォーム。数分で API が立ち上がる。">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Supabaze — Postgres をそのままプロダクトの土台に">
+<meta name="twitter:description" content="Supabaze は Postgres の上に認証・ストレージ・リアルタイム・エッジ関数を載せたオープンソースの開発プラットフォーム。数分で API が立ち上がる。">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
@@ -27,6 +39,45 @@
 }
 </script>
 <script type="module" src="/js/app.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Supabaze",
+  "url": "https://supabaze.example/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "description": "Postgres の上に認証・ストレージ・リアルタイム・エッジ関数を載せたオープンソースの開発プラットフォーム。",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Supabaze",
+    "url": "https://supabaze.example/"
+  },
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Free",
+      "price": "0",
+      "priceCurrency": "JPY",
+      "url": "https://supabaze.example/pricing.html"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pro",
+      "price": "3500",
+      "priceCurrency": "JPY",
+      "url": "https://supabaze.example/pricing.html"
+    },
+    {
+      "@type": "Offer",
+      "name": "Team",
+      "price": "12000",
+      "priceCurrency": "JPY",
+      "url": "https://supabaze.example/pricing.html"
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <header>
@@ -78,28 +129,28 @@
   <section>
     <h2>必要なバックエンドは、だいたい入っている</h2>
     <div class="grid">
-      <article>
-        <h4>Database</h4>
+      <article id="database">
+        <h3>Database</h3>
         <p>専有の Postgres インスタンス。拡張機能もそのまま使え、いつでも標準の <code>pg_dump</code> で持ち出せる。</p>
       </article>
-      <article>
-        <h4>Auth</h4>
+      <article id="auth">
+        <h3>Auth</h3>
         <p>メール・OAuth・SAML・パスキーに対応。行レベルセキュリティ (RLS) と同じ <code>auth.uid()</code> で権限を書く。</p>
       </article>
-      <article>
-        <h4>Storage</h4>
+      <article id="storage">
+        <h3>Storage</h3>
         <p>S3 互換のオブジェクトストレージ。画像変換と CDN 配信込みで、権限はテーブルと同じポリシーで書ける。</p>
       </article>
-      <article>
-        <h4>Realtime</h4>
+      <article id="realtime">
+        <h3>Realtime</h3>
         <p>WAL を購読して、行の変更を WebSocket でそのまま配信。Presence とブロードキャストも同じ接続に乗る。</p>
       </article>
-      <article>
-        <h4>Edge Functions</h4>
+      <article id="functions">
+        <h3>Edge Functions</h3>
         <p>Deno ランタイムの TypeScript 関数を 34 リージョンにデプロイ。コールドスタートは 50ms 未満。</p>
       </article>
-      <article>
-        <h4>Vector</h4>
+      <article id="vector">
+        <h3>Vector</h3>
         <p><code>pgvector</code> による埋め込み検索。RAG のインデックスを別サービスに切り出さずに済む。</p>
       </article>
     </div>

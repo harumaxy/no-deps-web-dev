@@ -6,6 +6,18 @@
 <title>変更履歴 — Supabaze</title>
 <meta name="description" content="Supabaze のリリースノート。新機能、改善、非互換な変更。">
 
+<link rel="canonical" href="https://supabaze.example/changelog.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Supabaze">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:url" content="https://supabaze.example/changelog.html">
+<meta property="og:title" content="変更履歴 — Supabaze">
+<meta property="og:description" content="Supabaze のリリースノート。新機能、改善、非互換な変更。">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="変更履歴 — Supabaze">
+<meta name="twitter:description" content="Supabaze のリリースノート。新機能、改善、非互換な変更。">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
@@ -38,7 +50,7 @@
 
   <article>
     <hgroup>
-      <h3>ブランチごとのプレビュー環境</h3>
+      <h2>ブランチごとのプレビュー環境</h2>
       <p><small>2026-09-08</small></p>
     </hgroup>
     <p>プルリクエストを開くと、マイグレーションとシードを適用した使い捨ての Postgres が立ち上がるようになりました。マージまたはクローズで自動的に破棄されます。Pro 以上で利用できます。</p>
@@ -46,7 +58,7 @@
 
   <article>
     <hgroup>
-      <h3>pgvector 0.8 と HNSW の並列構築</h3>
+      <h2>pgvector 0.8 と HNSW の並列構築</h2>
       <p><small>2026-08-25</small></p>
     </hgroup>
     <p>インデックス構築が従来比でおよそ 3 倍速くなりました。既存のインデックスは再構築なしでそのまま使えます。</p>
@@ -54,7 +66,7 @@
 
   <article>
     <hgroup>
-      <h3>パスキー (WebAuthn) の一般提供</h3>
+      <h2>パスキー (WebAuthn) の一般提供</h2>
       <p><small>2026-08-11</small></p>
     </hgroup>
     <p><code>auth.signInWithPasskey()</code> が全プランで使えるようになりました。既存のメール認証との併用も可能です。</p>
@@ -62,7 +74,7 @@
 
   <article>
     <hgroup>
-      <h3>エッジ関数のリージョン追加 (28 → 34)</h3>
+      <h2>エッジ関数のリージョン追加 (28 → 34)</h2>
       <p><small>2026-07-28</small></p>
     </hgroup>
     <p>大阪、ソウル、ヨハネスブルグ、サンパウロ、チューリッヒ、ドバイを追加しました。<code>--region all</code> でデプロイしていれば操作は不要です。</p>
@@ -70,7 +82,7 @@
 
   <article>
     <hgroup>
-      <h3>非推奨: レガシー API キー</h3>
+      <h2>非推奨: レガシー API キー</h2>
       <p><small>2026-07-14</small></p>
     </hgroup>
     <p>2026-12-31 をもって、ダッシュボード発行の旧形式キーを無効化します。移行先は公開鍵ペア方式の新キーです。詳細は <a href="/docs.html#auth">認証のドキュメント</a> を参照してください。</p>

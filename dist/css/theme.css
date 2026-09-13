@@ -104,6 +104,14 @@ h3 {
   letter-spacing: var(--type-display-lg-letter-spacing);
 }
 
+/* カード内の見出しは display-md (DESIGN.md の card title) に落とす。
+   h4 を使うと見出しレベルが飛ぶので、レベルは h3 のままサイズだけ 1 段下げる。 */
+article h3 {
+  font-size: var(--type-display-md-size);
+  line-height: var(--type-display-md-line-height);
+  letter-spacing: var(--type-display-md-letter-spacing);
+}
+
 @media (max-width: 767px) {
   h1 { font-size: var(--type-display-lg-size); }
   h2 { font-size: var(--type-display-md-size); }

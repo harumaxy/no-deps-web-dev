@@ -6,6 +6,18 @@
 <title>料金 — Supabaze</title>
 <meta name="description" content="Supabaze の料金プラン。無料で 2 プロジェクト、Pro は月額 3,500 円から。使った分だけの従量課金。">
 
+<link rel="canonical" href="https://supabaze.example/pricing.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Supabaze">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:url" content="https://supabaze.example/pricing.html">
+<meta property="og:title" content="料金 — Supabaze">
+<meta property="og:description" content="Supabaze の料金プラン。無料で 2 プロジェクト、Pro は月額 3,500 円から。使った分だけの従量課金。">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="料金 — Supabaze">
+<meta name="twitter:description" content="Supabaze の料金プラン。無料で 2 プロジェクト、Pro は月額 3,500 円から。使った分だけの従量課金。">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
@@ -26,6 +38,46 @@
 }
 </script>
 <script type="module" src="/js/app.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "無料プランに期限はありますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ありません。ただし 7 日間アクセスのないプロジェクトは自動的に一時停止され、ダッシュボードから再開できます。データは消えません。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "上限を超えるとどうなりますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Free では書き込みが停止します。Pro 以上は超過分が従量課金になり、請求は事前に設定した上限で頭打ちにできます。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "セルフホストできますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "できます。全コンポーネントが Apache-2.0 で公開されており、Docker Compose と Helm チャートを配布しています。マネージド版との API 差分はありません。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "他社サービスから移行できますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Postgres からは pg_dump をそのまま流し込めます。Firebase と MongoDB については移行ツールを用意しています。"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <header>
